@@ -64,3 +64,13 @@ Bodies are inserted into the request object for validation in the expectation po
     afterEach(function() {
         knockers.cleanAll();
     })
+
+# Misc
+
+<img src="https://github.com/timjnh/knockers/blob/master/knockers.png" />
+
+Yes they will npmjs.org... Yes they will.
+
+# License
+
+MIT
