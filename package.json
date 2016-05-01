@@ -1,0 +1,35 @@
+{
+  "name": "knockers",
+  "version": "0.0.1",
+  "description": "Slightly friendlier interface for nock",
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_ENV=test ./node_modules/.bin/istanbul cover -x \"*[spec].js\" ./spec/support/runner.js",
+    "watch:test": "NODE_ENV=test ./node_modules/.bin/nodemon -w ./source -w ./spec ./node_modules/.bin/jasmine"
+  },
+  "config": {
+    "ghooks": {
+      "commit-msg": "validate-commit-msg",
+      "pre-push": "npm test"
+    }
+  },
+  "keywords": [
+    "nock",
+    "test"
+  ],
+  "author": "Tim Jones",
+  "license": "MIT",
+  "devDependencies": {
+    "ghooks": "^1.2.1",
+    "istanbul": "^0.4.3",
+    "jasmine": "^2.4.1",
+    "jasmine-reporters": "^2.1.1",
+    "nodemon": "^1.9.2",
+    "restling": "^0.9.1",
+    "validate-commit-msg": "^2.6.1"
+  },
+  "dependencies": {
+    "nock": "^8.0.0",
+    "q": "^1.4.1"
+  }
+}
