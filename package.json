@@ -1,11 +1,12 @@
 {
   "name": "knockers",
-  "version": "0.0.1",
+  "version": "0.0.0-semantically-released",
   "description": "Slightly friendlier interface for nock",
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test ./node_modules/.bin/istanbul cover -x \"*[spec].js\" ./spec/support/runner.js",
-    "watch:test": "NODE_ENV=test ./node_modules/.bin/nodemon -w ./source -w ./spec ./node_modules/.bin/jasmine"
+    "watch:test": "NODE_ENV=test ./node_modules/.bin/nodemon -w ./source -w ./spec ./node_modules/.bin/jasmine",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "config": {
     "ghooks": {
@@ -30,7 +31,8 @@
     "jasmine-reporters": "^2.1.1",
     "nodemon": "^1.9.2",
     "restling": "^0.9.1",
-    "validate-commit-msg": "^2.6.1"
+    "validate-commit-msg": "^2.6.1",
+    "semantic-release": "^4.3.5"
   },
   "dependencies": {
     "nock": "^8.0.0",
