@@ -54,7 +54,7 @@ module.exports = (function() {
                 // executed after the request even is emitted.  as long as that remains
                 // true, this should be ok
                 knocker._setLastRequestBody(requestBody);
-                cb(null, _this._reply.body);// JSON.stringify(_this._reply.body));
+                cb(null, _this._reply.body);
             });
 
         knocker.setNock(myNock);

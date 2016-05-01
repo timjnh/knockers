@@ -1,10 +1,15 @@
 describe('KnockerBuilder', function() {
     var q = require('q'),
+        nock = require('nock'),
         Knocker = require('./knocker'),
         knockerBuilder;
 
     beforeEach(function () {
         knockerBuilder = require('./knocker_builder').build();
+    });
+
+    afterEach(function() {
+        nock.cleanAll();
     });
 
     describe('get method', function () {
@@ -80,8 +85,8 @@ describe('KnockerBuilder', function() {
             expect(nock.keyedInterceptors['POST ' + url][0].statusCode).toEqual(200);
 
             spyOn(knocker, '_setLastRequestBody');
-            nock.keyedInterceptors['POST ' + url][0].body('aUri', 'aRequestBody', function(responseBody) {
-                expect(responseBody).toEqual(JSON.stringify(expectedBody));
+            nock.keyedInterceptors['POST ' + url][0].body('aUri', 'aRequestBody', function(err, responseBody) {
+                expect(responseBody).toEqual(expectedBody);
                 expect(knocker._setLastRequestBody).toHaveBeenCalledWith('aRequestBody');
                 done();
             });
