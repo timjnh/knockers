@@ -1,0 +1,51 @@
+#
+# Configs
+#
+forbidden_code=( "console.log" "console.info" "console.error" "console.warn" "debugger" "var_dump" "print_r" "ddescribe" "fdescribe" "iit" "fit" "xdescribe" "xit")
+
+#
+# Color Definitions
+#
+red=`tput setaf 1`
+green=`tput setaf 2`
+yellow=`tput setaf 3`
+blue=`tput setaf 4`
+magenta=`tput setaf 5`
+cyan=`tput setaf 6`
+reset=`tput sgr0`
+
+#
+# error variable
+#
+error_found=false
+
+echo -e "${cyan}""[ >>> BEGIN PRE-COMMIT FORBIDDEN CODE CHECK ]""${reset}"
+
+for file in $(git diff --cached --name-only); do
+	#
+	# Test for debug calls
+	#
+	for (( i=0; i<${#forbidden_code[@]}; i++ )); do
+		if [ -e $file ] ; then
+			grep "${forbidden_code[$i]}" $file | grep -vq "//"
+			if [ $? -ne 1 ] ; then
+				echo "${red}FAILURE${reset}: You left a ${yellow}${forbidden_code[$i]}${reset} in ${cyan}$file${reset}"
+				error_found=true
+			fi
+		fi
+	done
+
+	#
+	#
+	#
+
+done
+
+if $error_found ; then
+	echo -e "${red}[ >>> COMMIT REJECTED ]"
+	echo -e "${red}""If you absolutely need to commit this use git commit --no-verify (-n)"${reset}""
+	exit 1
+else
+    echo -e "${green}""[ >>> PRE-COMMIT FORBIDDEN CODE CHECK COMPLETE ]""${reset}"
+	exit 0
+fi

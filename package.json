@@ -11,6 +11,7 @@
   "config": {
     "ghooks": {
       "commit-msg": "validate-commit-msg",
+      "pre-commit": "bash ./bin/git/hooks/reject-forbidden-code",
       "pre-push": "npm test"
     }
   },
