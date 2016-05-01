@@ -33,7 +33,7 @@ describe('knockers', function() {
     });
 
     describe('post', function() {
-        fit('should intercept and log requests', function(done) {
+        it('should intercept and log requests', function(done) {
             var knocker,
                 requestPromise,
                 url = 'http://www.google.com/a/path/and',
