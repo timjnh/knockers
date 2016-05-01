@@ -49,7 +49,6 @@ describe('knockers', function() {
 
             q.spread([knocker.received(), requestPromise],
                 function (request, response) {
-                    console.log('COMPLETE');
                     expect(knocker.requests.length).toEqual(1);
                     expect(knocker.requests[0]).toBe(request);
                     expect(knocker.requests[0].body).toEqual(expectedRequestBody);
