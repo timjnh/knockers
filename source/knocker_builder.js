@@ -25,6 +25,11 @@ module.exports = (function() {
         return this;
     };
 
+    KnockerBuilder.prototype.replyWithError = function replyWithError(error) {
+        this._reply = { error: error };
+        return this;
+    };
+
     KnockerBuilder.prototype.build = function build() {
         assert(this._url, 'url is required');
         assert(this._reply, 'reply is required');
@@ -47,8 +52,12 @@ module.exports = (function() {
 
         myNock = nock(parsedUrl.protocol + '//' + parsedUrl.host)
             .filteringRequestBody(function(body) { return '*'; })
-            .post(parsedUrl.path, '*')
-            .reply(this._reply.code, function(uri, requestBody, cb) {
+            .post(parsedUrl.path, '*');
+
+        if(this._reply.error) {
+            myNock = myNock.replyWithError(this._reply.error);
+        } else {
+            myNock = myNock.reply(this._reply.code, function (uri, requestBody, cb) {
                 // this is kind of icky but i can't see any other way to get to the body
                 // of the request that nock received.  the reply callback is currently
                 // executed after the request even is emitted.  as long as that remains
@@ -56,6 +65,7 @@ module.exports = (function() {
                 knocker._setLastRequestBody(requestBody);
                 cb(null, _this._reply.body);
             });
+        }
 
         knocker.setNock(myNock);
 
@@ -63,13 +73,19 @@ module.exports = (function() {
     }
 
     function buildGetKnocker() {
-        var parsedUrl = url.parse(this._url);
+        var myNock,
+            parsedUrl = url.parse(this._url);
 
-        return Knocker.build(
-            nock(parsedUrl.protocol + '//' + parsedUrl.host)
-                .get(parsedUrl.path)
-                .reply(this._reply.code, this._reply.body)
-        );
+        myNock = nock(parsedUrl.protocol + '//' + parsedUrl.host)
+            .get(parsedUrl.path);
+
+        if(this._reply.error) {
+            myNock = myNock.replyWithError(this._reply.error);
+        } else {
+            myNock = myNock.reply(this._reply.code, this._reply.body)
+        }
+
+        return Knocker.build(myNock);
     }
 
     KnockerBuilder.build = function build() {

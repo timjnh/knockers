@@ -39,6 +39,14 @@ describe('KnockerBuilder', function() {
         });
     });
 
+    describe('replyWithError method', function() {
+        it('should set the reply object', function() {
+            var expectedResponse = {ok: true};
+            expect(knockerBuilder.replyWithError('oh noes!')).toBe(knockerBuilder);
+            expect(knockerBuilder._reply.error).toEqual('oh noes!');
+        });
+    });
+
     describe('build method', function () {
         var url = 'http://www.google.com:80/a/path/and?a=query';
 
@@ -66,6 +74,23 @@ describe('KnockerBuilder', function() {
             expect(nock.keyedInterceptors['GET ' + url][0].body).toEqual(JSON.stringify(expectedBody));
         });
 
+        it('should create a knocker for get requests with an error reply', function() {
+            var nock,
+                knocker;
+
+            knocker = knockerBuilder
+                .get(url)
+                .replyWithError('oh noes!')
+                .build();
+
+            expect(Knocker.build).toHaveBeenCalled();
+
+            nock = knocker._nock;
+
+            expect(nock.keyedInterceptors['GET ' + url]).toBeDefined();
+            expect(nock.keyedInterceptors['GET ' + url][0].errorMessage).toEqual('oh noes!');
+        });
+
         it('should create a knocker for post requests', function(done) {
             var nock,
                 knocker,
@@ -90,6 +115,23 @@ describe('KnockerBuilder', function() {
                 expect(knocker._setLastRequestBody).toHaveBeenCalledWith('aRequestBody');
                 done();
             });
+        });
+
+        it('should create a knocker for post requests with an error reply', function() {
+            var nock,
+                knocker;
+
+            knocker = knockerBuilder
+                .post(url)
+                .replyWithError('oh noes!')
+                .build();
+
+            expect(Knocker.build).toHaveBeenCalled();
+
+            nock = knocker._nock;
+
+            expect(nock.keyedInterceptors['POST ' + url]).toBeDefined();
+            expect(nock.keyedInterceptors['POST ' + url][0].errorMessage).toEqual('oh noes!');
         });
 
         it('should complain if url is not set', function () {
