@@ -90,7 +90,7 @@ module.exports = (function() {
         if(this._reply.error) {
             myNock = myNock.replyWithError(this._reply.error);
         } else {
-            myNock = myNock.reply(this._reply.code, this._reply.body)
+            myNock = myNock.reply(this._reply.code, this._reply.body);
         }
 
         return Knocker.build(myNock);
@@ -98,18 +98,26 @@ module.exports = (function() {
 
     function buildDeleteKnocker() {
         var myNock,
-            parsedUrl = url.parse(this._url);
+            _this = this,
+            parsedUrl = url.parse(this._url),
+            knocker = Knocker.build();
 
         myNock = nock(parsedUrl.protocol + '//' + parsedUrl.host)
-            .delete(parsedUrl.path);
+            .filteringRequestBody(function(body) { return '*'; })
+            .delete(parsedUrl.path, '*');
 
         if(this._reply.error) {
             myNock = myNock.replyWithError(this._reply.error);
         } else {
-            myNock = myNock.reply(this._reply.code, this._reply.body)
+            myNock = myNock.reply(this._reply.code, function (uri, requestBody, cb) {
+                knocker._setLastRequestBody(requestBody);
+                cb(null, _this._reply.body);
+            });
         }
 
-        return Knocker.build(myNock);
+        knocker.setNock(myNock);
+
+        return knocker;
     }
 
     KnockerBuilder.build = function build() {

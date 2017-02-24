@@ -91,7 +91,7 @@ describe('KnockerBuilder', function() {
             expect(nock.keyedInterceptors['GET ' + url][0].errorMessage).toEqual('oh noes!');
         });
 
-        it('should create a knocker for delete requests', function() {
+        it('should create a knocker for delete requests', function(done) {
             var nock,
                 knocker,
                 expectedBody = { ok: true };
@@ -108,7 +108,13 @@ describe('KnockerBuilder', function() {
 
             expect(nock.keyedInterceptors['DELETE ' + url]).toBeDefined();
             expect(nock.keyedInterceptors['DELETE ' + url][0].statusCode).toEqual(200);
-            expect(nock.keyedInterceptors['DELETE ' + url][0].body).toEqual(JSON.stringify(expectedBody));
+
+            spyOn(knocker, '_setLastRequestBody');
+            nock.keyedInterceptors['DELETE ' + url][0].body('aUri', 'aRequestBody', function(err, responseBody) {
+                expect(responseBody).toEqual(expectedBody);
+                expect(knocker._setLastRequestBody).toHaveBeenCalledWith('aRequestBody');
+                done();
+            });
         });
 
         it('should create a knocker for delete requests with an error reply', function() {
