@@ -32,6 +32,31 @@ describe('knockers', function() {
         });
     });
 
+    describe('delete', function () {
+        it('should intercept and log requests', function (done) {
+            var knocker,
+                requestPromise,
+                url = 'http://www.google.com/a/path/and?a=query',
+                expectedResponse = { ok: true };
+
+            knocker = knockers()
+                .delete(url)
+                .reply(200, expectedResponse)
+                .build();
+
+            requestPromise = rest.del(url);
+
+            q.spread([knocker.received(), requestPromise],
+                function (request, response) {
+                    expect(knocker.requests.length).toEqual(1);
+                    expect(knocker.requests[0]).toBe(request);
+
+                    expect(response.data).toEqual(expectedResponse);
+                })
+                .done(done);
+        });
+    });
+
     describe('post', function() {
         it('should intercept and log requests', function(done) {
             var knocker,

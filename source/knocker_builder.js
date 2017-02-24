@@ -20,6 +20,12 @@ module.exports = (function() {
         return this;
     };
 
+    KnockerBuilder.prototype.delete = function _delete(url) {
+        this._method = 'DELETE';
+        this._url = url;
+        return this;
+    };
+
     KnockerBuilder.prototype.reply = function reply(code, body) {
         this._reply = { code: code, body: body };
         return this;
@@ -39,6 +45,8 @@ module.exports = (function() {
             return buildPostKnocker.bind(this)();
         } else if (this._method == 'GET') {
             return buildGetKnocker.bind(this)();
+        } else if(this._method == 'DELETE') {
+            return buildDeleteKnocker.bind(this)();
         } else {
             throw 'How did I get here?';
         }
@@ -78,6 +86,22 @@ module.exports = (function() {
 
         myNock = nock(parsedUrl.protocol + '//' + parsedUrl.host)
             .get(parsedUrl.path);
+
+        if(this._reply.error) {
+            myNock = myNock.replyWithError(this._reply.error);
+        } else {
+            myNock = myNock.reply(this._reply.code, this._reply.body)
+        }
+
+        return Knocker.build(myNock);
+    }
+
+    function buildDeleteKnocker() {
+        var myNock,
+            parsedUrl = url.parse(this._url);
+
+        myNock = nock(parsedUrl.protocol + '//' + parsedUrl.host)
+            .delete(parsedUrl.path);
 
         if(this._reply.error) {
             myNock = myNock.replyWithError(this._reply.error);

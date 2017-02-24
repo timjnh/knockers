@@ -91,6 +91,43 @@ describe('KnockerBuilder', function() {
             expect(nock.keyedInterceptors['GET ' + url][0].errorMessage).toEqual('oh noes!');
         });
 
+        it('should create a knocker for delete requests', function() {
+            var nock,
+                knocker,
+                expectedBody = { ok: true };
+
+            knocker = knockerBuilder
+                .delete(url)
+                .reply(200, expectedBody)
+                .build();
+
+            expect(Knocker.build).toHaveBeenCalled();
+
+            nock = knocker._nock;
+            expect(nock).not.toBeUndefined();
+
+            expect(nock.keyedInterceptors['DELETE ' + url]).toBeDefined();
+            expect(nock.keyedInterceptors['DELETE ' + url][0].statusCode).toEqual(200);
+            expect(nock.keyedInterceptors['DELETE ' + url][0].body).toEqual(JSON.stringify(expectedBody));
+        });
+
+        it('should create a knocker for delete requests with an error reply', function() {
+            var nock,
+                knocker;
+
+            knocker = knockerBuilder
+                .delete(url)
+                .replyWithError('oh noes!')
+                .build();
+
+            expect(Knocker.build).toHaveBeenCalled();
+
+            nock = knocker._nock;
+
+            expect(nock.keyedInterceptors['DELETE ' + url]).toBeDefined();
+            expect(nock.keyedInterceptors['DELETE ' + url][0].errorMessage).toEqual('oh noes!');
+        });
+
         it('should create a knocker for post requests', function(done) {
             var nock,
                 knocker,

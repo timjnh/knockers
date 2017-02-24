@@ -59,6 +59,15 @@ Bodies are inserted into the request object for validation in the expectation po
 
     expect(knocker.requests[0].body).toEqual({ expected: body });
 
+# DELETE requests
+
+DELETE requests are pretty close as well
+
+    knockers()
+        .delete('http://somefunwebsite/with/a/path')
+        .reply(200, { stuff: 'and things' })
+        .build();
+
 # Cleanup
 
     afterEach(function() {
