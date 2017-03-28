@@ -116,4 +116,31 @@ describe('knockers', function() {
                 .done(done);
         });
     });
+
+    describe('put', function() {
+        it('should intercept and log requests', function(done) {
+            var knocker,
+                requestPromise,
+                url = 'http://www.google.com/a/path/and',
+                expectedRequestBody = { hi: 'there!' },
+                expectedResponse = { ok: true};
+
+            knocker = knockers()
+                .put(url)
+                .reply(200, expectedResponse)
+                .build();
+
+            requestPromise = rest.putJson(url, expectedRequestBody);
+
+            q.spread([knocker.received(), requestPromise],
+                function (request, response) {
+                    expect(knocker.requests.length).toEqual(1);
+                    expect(knocker.requests[0]).toBe(request);
+                    expect(knocker.requests[0].body).toEqual(expectedRequestBody);
+
+                    expect(response.data).toEqual(expectedResponse);
+                })
+                .done(done);
+        });
+    });
 });

@@ -177,6 +177,32 @@ describe('KnockerBuilder', function() {
             expect(nock.keyedInterceptors['POST ' + url][0].errorMessage).toEqual('oh noes!');
         });
 
+        it('should create a knocker for put requests', function(done) {
+            var nock,
+                knocker,
+                expectedBody = { ok: true };
+
+            knocker = knockerBuilder
+                .put(url)
+                .reply(200, expectedBody)
+                .build();
+
+            expect(Knocker.build).toHaveBeenCalled();
+
+            nock = knocker._nock;
+            expect(nock).not.toBeUndefined();
+
+            expect(nock.keyedInterceptors['PUT ' + url]).toBeDefined();
+            expect(nock.keyedInterceptors['PUT ' + url][0].statusCode).toEqual(200);
+
+            spyOn(knocker, '_setLastRequestBody');
+            nock.keyedInterceptors['PUT ' + url][0].body('aUri', 'aRequestBody', function(err, responseBody) {
+                expect(responseBody).toEqual(expectedBody);
+                expect(knocker._setLastRequestBody).toHaveBeenCalledWith('aRequestBody');
+                done();
+            });
+        });
+
         it('should complain if url is not set', function () {
             try {
                 knockerBuilder.build();

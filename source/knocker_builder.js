@@ -20,6 +20,12 @@ module.exports = (function() {
         return this;
     };
 
+    KnockerBuilder.prototype.put = function put(url) {
+        this._method = 'PUT';
+        this._url = url;
+        return this;
+    };
+
     KnockerBuilder.prototype.delete = function _delete(url) {
         this._method = 'DELETE';
         this._url = url;
@@ -43,7 +49,9 @@ module.exports = (function() {
         assert(this._method, 'method is required');
         if(this._method == 'POST') {
             return buildPostKnocker.bind(this)();
-        } else if (this._method == 'GET') {
+        } else if(this._method == 'PUT') {
+            return buildPutKnocker.bind(this)();
+        } else if(this._method == 'GET') {
             return buildGetKnocker.bind(this)();
         } else if(this._method == 'DELETE') {
             return buildDeleteKnocker.bind(this)();
@@ -61,6 +69,34 @@ module.exports = (function() {
         myNock = nock(parsedUrl.protocol + '//' + parsedUrl.host)
             .filteringRequestBody(function(body) { return '*'; })
             .post(parsedUrl.path, '*');
+
+        if(this._reply.error) {
+            myNock = myNock.replyWithError(this._reply.error);
+        } else {
+            myNock = myNock.reply(this._reply.code, function (uri, requestBody, cb) {
+                // this is kind of icky but i can't see any other way to get to the body
+                // of the request that nock received.  the reply callback is currently
+                // executed after the request even is emitted.  as long as that remains
+                // true, this should be ok
+                knocker._setLastRequestBody(requestBody);
+                cb(null, _this._reply.body);
+            });
+        }
+
+        knocker.setNock(myNock);
+
+        return knocker;
+    }
+
+    function buildPutKnocker() {
+        var myNock,
+            _this = this,
+            parsedUrl = url.parse(this._url),
+            knocker = Knocker.build();
+
+        myNock = nock(parsedUrl.protocol + '//' + parsedUrl.host)
+            .filteringRequestBody(function(body) { return '*'; })
+            .put(parsedUrl.path, '*');
 
         if(this._reply.error) {
             myNock = myNock.replyWithError(this._reply.error);
