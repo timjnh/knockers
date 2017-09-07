@@ -11,8 +11,16 @@ before_install:
   - npm i -g npm@^2.0.0
 before_script:
   - npm prune
+script:
+  - sonar-scanner
 after_success:
   - npm run semantic-release
 branches:
-  except:
-    - /^v\d+\.\d+\.\d+$/
+  only: master
+addons:
+  sonarcloud:
+    organization: "timjnh-github"
+    token:
+      secure: "wKRHC6mpgVKCYsXvNGZuVpBeQWHFDKsX1cI+fiiykt4VD1xSIpSoiD6S5nCcaYE5aeTdM+Plra7cAwJ6I7lnCYDU9FStY6o3lt6Oyc4FurXFTczp5+FUZ+FvaUkmqluOWKm5+aXyRn09fHP0bNwLPBq9WG5SPqcDAe1dGSrGb1TL5igKx/aaJ8ORe7ZtJM+/570RsZz9qRg06+IYXYkFa6CwlZWx9hK27BMq+X1ueTzdIoOb7zbOnvkEKLRCniR0VY0I4eBYDp1L81dzMpbm0WraIUWrdz+n1Fkz13UYr2vYxysdW+JN3alV9baD7ZV6rb5hl2VbBVuboexOsFiqZ+vA2MlQNfscxdbrNN7XgV2tQuQehYsukgbdCg/MIyOJVY7iVwnuQzHWMYJTQFNqY8JbFOFX/gxZdQbwoyqIE26IehM/tFMhmHXZBvb/usyy4bZ5GQC6uQm9NBjFSKNDmvHEUxGFddM/M0Opy/YDrGxzggEnbF6DzPGnaGNcfIxBhwGW3TzJclCRO4019zJ/Bmf71NGwPSTsEb6kIE9uJcKwg6AVliY/AbDydMTRwhGS57Jma5vbt5x8FqfFgT7oVshZ06qs37LMlKkmK1+tOB+yFeUarYaXKX2cdvukjIICkf/4bAapVQcxGQWZGQ7H8RWv1L/xgWIJyId3VjdPvHA="
+    github_token:
+      secure: "k2LI5wSMuaLkvkOWOlLb5HZGmJDdyhLuQ3UAdm3rU3IKdVCWK/wiGMDUD23zTSTP64JOQvKCjR8GCs3+qvglVn/KM9omdk+Yl6RvjTrBezIHz+wXd34H+LgnPc5L7lEb2nolGZ0paPkzyhMWO+6tslzYoglLOzCKauDrE62X0PWw6NdEapBDGr7mDVG9MKV9zYipq/Jr/fSStb+GuYtxp8uRGwFf1oTT9xZ+se7fErFaQoMOvFUny/S0e+KSVGObgP6faV4Fts+l6MwtCY6H072UK888b/U2X97pvoHuVoZnXOVeSCHUEoz2xya8UuxN9DcWNUWsSEKCKXcYhWFM3vwJxGBmrsDHMKjC6fagtytc+8nXjS4hyt/KhZwuT7OAIoNu92pVnXwXJtFATaCk5fRrDAP9Q3p0NsxhnTWGr9nhaOFfXQq9KGHSWTagTyDcMH6/jadyMXTKvmVmqlr9O72wsozOLWnOe2WKJIvyHd2qfedW7gk6bzvlPWxdKYqesPyiXzHrpoQGcWL4DbQjGdQjhoEQdUVbPJ8+3tHn41/wUHn9IN07ToImjBXvcBTJSRpSFwv6hpd9rf4moSLnm7SYmBYa1LtPOh3D10UOjYQWPGzFjmblzfDHYStCDfouiR9/atBi9YTq1djibfQpE5ZaelBtmBkhdZb+wTgReck="
