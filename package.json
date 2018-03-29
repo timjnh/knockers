@@ -36,7 +36,7 @@
     "semantic-release": "^4.3.5"
   },
   "dependencies": {
-    "nock": "^9.1.4",
+    "nock": "^9.2.3",
     "q": "^1.4.1"
   }
 }

@@ -74,6 +74,16 @@ describe('KnockerBuilder', function() {
             expect(nock.keyedInterceptors['GET ' + url][0].body).toEqual(JSON.stringify(expectedBody));
         });
 
+        it('should respect the persist setting for get requests', function() {
+            knocker = knockerBuilder
+                .get(url)
+                .reply(200, { ok: true })
+                .persist(true)
+                .build();
+            
+            expect(knocker._nock._persist).toBe(true);
+        });
+
         it('should create a knocker for get requests with an error reply', function() {
             var nock,
                 knocker;
@@ -115,6 +125,16 @@ describe('KnockerBuilder', function() {
                 expect(knocker._setLastRequestBody).toHaveBeenCalledWith('aRequestBody');
                 done();
             });
+        });
+
+        it('should respect the persist setting for delete requests', function() {
+            knocker = knockerBuilder
+                .delete(url)
+                .persist(true)
+                .reply(200, { ok: true })
+                .build();
+            
+            expect(knocker._nock._persist).toBe(true);
         });
 
         it('should create a knocker for delete requests with an error reply', function() {
@@ -160,6 +180,16 @@ describe('KnockerBuilder', function() {
             });
         });
 
+        it('should respect the persist setting for post requests', function() {
+            knocker = knockerBuilder
+                .post(url)
+                .persist(true)
+                .reply(200, { ok: true })
+                .build();
+            
+            expect(knocker._nock._persist).toBe(true);
+        });
+
         it('should create a knocker for post requests with an error reply', function() {
             var nock,
                 knocker;
@@ -201,6 +231,16 @@ describe('KnockerBuilder', function() {
                 expect(knocker._setLastRequestBody).toHaveBeenCalledWith('aRequestBody');
                 done();
             });
+        });
+
+        it('should respect the persist setting for post requests', function() {
+            knocker = knockerBuilder
+                .put(url)
+                .persist(true)
+                .reply(200, { ok: true })
+                .build();
+            
+            expect(knocker._nock._persist).toBe(true);
         });
 
         it('should complain if url is not set', function () {

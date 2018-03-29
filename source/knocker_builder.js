@@ -32,6 +32,11 @@ module.exports = (function() {
         return this;
     };
 
+    KnockerBuilder.prototype.persist = function persist(persist) {
+        this._persist = persist === undefined ? true : persist;
+        return this;
+    };
+
     KnockerBuilder.prototype.reply = function reply(code, body) {
         this._reply = { code: code, body: body };
         return this;
@@ -66,8 +71,12 @@ module.exports = (function() {
             parsedUrl = url.parse(this._url),
             knocker = Knocker.build();
 
-        myNock = nock(parsedUrl.protocol + '//' + parsedUrl.host)
-            .filteringRequestBody(function(body) { return '*'; })
+        myNock = nock(parsedUrl.protocol + '//' + parsedUrl.host);
+        if(this._persist !== undefined) {
+            myNock = myNock.persist(this._persist);
+        }
+
+        myNock = myNock.filteringRequestBody(function(body) { return '*'; })
             .post(parsedUrl.path, '*');
 
         if(this._reply.error) {
@@ -94,8 +103,12 @@ module.exports = (function() {
             parsedUrl = url.parse(this._url),
             knocker = Knocker.build();
 
-        myNock = nock(parsedUrl.protocol + '//' + parsedUrl.host)
-            .filteringRequestBody(function(body) { return '*'; })
+        myNock = nock(parsedUrl.protocol + '//' + parsedUrl.host);
+        if(this._persist !== undefined) {
+            myNock = myNock.persist(this._persist);
+        }
+
+        myNock = myNock.filteringRequestBody(function(body) { return '*'; })
             .put(parsedUrl.path, '*');
 
         if(this._reply.error) {
@@ -120,8 +133,12 @@ module.exports = (function() {
         var myNock,
             parsedUrl = url.parse(this._url);
 
-        myNock = nock(parsedUrl.protocol + '//' + parsedUrl.host)
-            .get(parsedUrl.path);
+        myNock = nock(parsedUrl.protocol + '//' + parsedUrl.host);
+        if(this._persist !== undefined) {
+            myNock = myNock.persist(this._persist);
+        }
+
+        myNock = myNock.get(parsedUrl.path);
 
         if(this._reply.error) {
             myNock = myNock.replyWithError(this._reply.error);
@@ -138,8 +155,12 @@ module.exports = (function() {
             parsedUrl = url.parse(this._url),
             knocker = Knocker.build();
 
-        myNock = nock(parsedUrl.protocol + '//' + parsedUrl.host)
-            .filteringRequestBody(function(body) { return '*'; })
+        myNock = nock(parsedUrl.protocol + '//' + parsedUrl.host);
+        if(this._persist !== undefined) {
+            myNock = myNock.persist(this._persist);
+        }
+
+        myNock = myNock.filteringRequestBody(function(body) { return '*'; })
             .delete(parsedUrl.path, '*');
 
         if(this._reply.error) {
