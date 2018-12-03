@@ -757,16 +757,6 @@
         "which": "1.3.1"
       }
     },
-    "cross-spawn-async": {
-      "version": "2.2.5",
-      "resolved": "http://registry.npmjs.org/cross-spawn-async/-/cross-spawn-async-2.2.5.tgz",
-      "integrity": "sha1-hF/wwINKPe2dFg2sptOQkGuyiMw=",
-      "dev": true,
-      "requires": {
-        "lru-cache": "4.1.5",
-        "which": "1.3.1"
-      }
-    },
     "crypto-random-string": {
       "version": "1.0.0",
       "resolved": "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-1.0.0.tgz",
@@ -1008,20 +998,6 @@
         "split": "1.0.1",
         "stream-combiner": "0.2.2",
         "through": "2.3.8"
-      }
-    },
-    "execa": {
-      "version": "0.4.0",
-      "resolved": "https://registry.npmjs.org/execa/-/execa-0.4.0.tgz",
-      "integrity": "sha1-TrZGejaglfq7KXD/nV4/t7zm68M=",
-      "dev": true,
-      "requires": {
-        "cross-spawn-async": "2.2.5",
-        "is-stream": "1.1.0",
-        "npm-run-path": "1.0.0",
-        "object-assign": "4.1.1",
-        "path-key": "1.0.0",
-        "strip-eof": "1.0.0"
       }
     },
     "exit": {
@@ -1978,21 +1954,6 @@
         "assert-plus": "1.0.0"
       }
     },
-    "ghooks": {
-      "version": "1.3.2",
-      "resolved": "https://registry.npmjs.org/ghooks/-/ghooks-1.3.2.tgz",
-      "integrity": "sha1-vuKd7sQoPiPrH/N9lKgSCs1DMuk=",
-      "dev": true,
-      "requires": {
-        "execa": "0.4.0",
-        "findup": "0.1.5",
-        "lodash.clone": "4.3.2",
-        "manage-path": "2.0.0",
-        "opt-cli": "1.5.1",
-        "path-exists": "2.1.0",
-        "spawn-command": "0.0.2"
-      }
-    },
     "git-head": {
       "version": "1.20.1",
       "resolved": "https://registry.npmjs.org/git-head/-/git-head-1.20.1.tgz",
@@ -2100,12 +2061,6 @@
       "version": "4.1.15",
       "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.1.15.tgz",
       "integrity": "sha512-6uHUhOPEBgQ24HM+r6b/QwWfZq+yiFcipKFrOFiBEnWdy5sdzYoi+pJeQaPI5qOLRFqWmAXUPQNsielzdLoecA==",
-      "dev": true
-    },
-    "graceful-readlink": {
-      "version": "1.0.1",
-      "resolved": "https://registry.npmjs.org/graceful-readlink/-/graceful-readlink-1.0.1.tgz",
-      "integrity": "sha1-TK+tdrxi8C+gObL5Tpo906ORpyU=",
       "dev": true
     },
     "handlebars": {
@@ -2868,12 +2823,6 @@
         "lodash.keys": "3.1.2"
       }
     },
-    "lodash._baseclone": {
-      "version": "4.5.7",
-      "resolved": "https://registry.npmjs.org/lodash._baseclone/-/lodash._baseclone-4.5.7.tgz",
-      "integrity": "sha1-zkKt4IOE711i+nfDD2GkbmhvhDQ=",
-      "dev": true
-    },
     "lodash._basecopy": {
       "version": "3.0.1",
       "resolved": "https://registry.npmjs.org/lodash._basecopy/-/lodash._basecopy-3.0.1.tgz",
@@ -2918,15 +2867,6 @@
         "lodash._baseassign": "3.2.0",
         "lodash._createassigner": "3.1.1",
         "lodash.keys": "3.1.2"
-      }
-    },
-    "lodash.clone": {
-      "version": "4.3.2",
-      "resolved": "https://registry.npmjs.org/lodash.clone/-/lodash.clone-4.3.2.tgz",
-      "integrity": "sha1-5WsXa2gjp93jj38r9Y3n1ZcSAOk=",
-      "dev": true,
-      "requires": {
-        "lodash._baseclone": "4.5.7"
       }
     },
     "lodash.debounce": {
@@ -3016,12 +2956,6 @@
       "requires": {
         "pify": "3.0.0"
       }
-    },
-    "manage-path": {
-      "version": "2.0.0",
-      "resolved": "https://registry.npmjs.org/manage-path/-/manage-path-2.0.0.tgz",
-      "integrity": "sha1-9M+EV7km7u4qg7FzUBQUvHbrlZc=",
-      "dev": true
     },
     "map-cache": {
       "version": "0.2.2",
@@ -3347,15 +3281,6 @@
         }
       }
     },
-    "npm-run-path": {
-      "version": "1.0.0",
-      "resolved": "https://registry.npmjs.org/npm-run-path/-/npm-run-path-1.0.0.tgz",
-      "integrity": "sha1-9cMr9ZX+ga6Sfa7FLoL4sACsPI8=",
-      "dev": true,
-      "requires": {
-        "path-key": "1.0.0"
-      }
-    },
     "npmconf": {
       "version": "2.1.3",
       "resolved": "https://registry.npmjs.org/npmconf/-/npmconf-2.1.3.tgz",
@@ -3503,35 +3428,6 @@
         "wrappy": "1.0.2"
       }
     },
-    "opt-cli": {
-      "version": "1.5.1",
-      "resolved": "https://registry.npmjs.org/opt-cli/-/opt-cli-1.5.1.tgz",
-      "integrity": "sha1-BNtEexPJa5kusxaFJm9O0NlzbcI=",
-      "dev": true,
-      "requires": {
-        "commander": "2.9.0",
-        "lodash.clone": "4.3.2",
-        "manage-path": "2.0.0",
-        "spawn-command": "0.0.2-1"
-      },
-      "dependencies": {
-        "commander": {
-          "version": "2.9.0",
-          "resolved": "http://registry.npmjs.org/commander/-/commander-2.9.0.tgz",
-          "integrity": "sha1-nJkJQXbhIkDLItbFFGCYQA/g99Q=",
-          "dev": true,
-          "requires": {
-            "graceful-readlink": "1.0.1"
-          }
-        },
-        "spawn-command": {
-          "version": "0.0.2-1",
-          "resolved": "https://registry.npmjs.org/spawn-command/-/spawn-command-0.0.2-1.tgz",
-          "integrity": "sha1-YvXpRmmBwbeW3Fkpk34RycaSG9A=",
-          "dev": true
-        }
-      }
-    },
     "optimist": {
       "version": "0.6.1",
       "resolved": "https://registry.npmjs.org/optimist/-/optimist-0.6.1.tgz",
@@ -3674,12 +3570,6 @@
       "version": "1.0.2",
       "resolved": "https://registry.npmjs.org/path-is-inside/-/path-is-inside-1.0.2.tgz",
       "integrity": "sha1-NlQX3t5EQw0cEa9hAn+s8HS9/FM=",
-      "dev": true
-    },
-    "path-key": {
-      "version": "1.0.0",
-      "resolved": "https://registry.npmjs.org/path-key/-/path-key-1.0.0.tgz",
-      "integrity": "sha1-XVPVeAGWRsDWiADbThRua9wqx68=",
       "dev": true
     },
     "path-object": {
@@ -4443,12 +4333,6 @@
       "version": "0.4.0",
       "resolved": "https://registry.npmjs.org/source-map-url/-/source-map-url-0.4.0.tgz",
       "integrity": "sha1-PpNdfd1zYxuXZZlW1VEo6HtQhKM=",
-      "dev": true
-    },
-    "spawn-command": {
-      "version": "0.0.2",
-      "resolved": "https://registry.npmjs.org/spawn-command/-/spawn-command-0.0.2.tgz",
-      "integrity": "sha1-lUThpDygRfhTGqwaSMspva5iM44=",
       "dev": true
     },
     "spdx-correct": {
