@@ -74,6 +74,25 @@ describe('KnockerBuilder', function() {
             expect(nock.keyedInterceptors['GET ' + url][0].body).toEqual(JSON.stringify(expectedBody));
         });
 
+        it('should create a knocker for get requests with response headers', function() {
+            var nock,
+                knocker,
+                expectedBody = { ok: true },
+                headers = { 'foo': 'bar' };
+
+            knocker = knockerBuilder
+                .get(url)
+                .reply(200, expectedBody, headers)
+                .build();
+
+            expect(Knocker.build).toHaveBeenCalled();
+
+            nock = knocker._nock;
+            expect(nock).not.toBeUndefined();
+
+            expect(nock.keyedInterceptors['GET ' + url][0].headers).toEqual(jasmine.objectContaining(headers));
+        });
+
         it('should respect the persist setting for get requests', function() {
             knocker = knockerBuilder
                 .get(url)
@@ -121,8 +140,28 @@ describe('KnockerBuilder', function() {
 
             spyOn(knocker, '_setLastRequestBody');
             nock.keyedInterceptors['DELETE ' + url][0].body('aUri', 'aRequestBody', function(err, responseBody) {
-                expect(responseBody).toEqual(expectedBody);
+                expect(responseBody).toEqual([200, expectedBody, undefined]);
                 expect(knocker._setLastRequestBody).toHaveBeenCalledWith('aRequestBody');
+                done();
+            });
+        });
+
+        it('should create a knocker for delete requests with headers', function(done) {
+            var nock,
+                knocker,
+                expectedBody = { ok: true },
+                headers = { foo: 'bar' };
+
+            knocker = knockerBuilder
+                .delete(url)
+                .reply(200, expectedBody, headers)
+                .build();
+
+            nock = knocker._nock;
+
+            spyOn(knocker, '_setLastRequestBody');
+            nock.keyedInterceptors['DELETE ' + url][0].body('aUri', 'aRequestBody', function(err, responseBody) {
+                expect(responseBody).toEqual([200, expectedBody, jasmine.objectContaining(headers)]);
                 done();
             });
         });
@@ -174,8 +213,28 @@ describe('KnockerBuilder', function() {
 
             spyOn(knocker, '_setLastRequestBody');
             nock.keyedInterceptors['POST ' + url][0].body('aUri', 'aRequestBody', function(err, responseBody) {
-                expect(responseBody).toEqual(expectedBody);
+                expect(responseBody).toEqual([200, expectedBody, undefined]);
                 expect(knocker._setLastRequestBody).toHaveBeenCalledWith('aRequestBody');
+                done();
+            });
+        });
+
+        it('should create a knocker for post requests that include headers', function(done) {
+            var nock,
+                knocker,
+                expectedBody = { ok: true },
+                headers = { foo: 'bar' };
+
+            knocker = knockerBuilder
+                .post(url)
+                .reply(200, expectedBody, headers)
+                .build();
+
+            nock = knocker._nock;
+
+            spyOn(knocker, '_setLastRequestBody');
+            nock.keyedInterceptors['POST ' + url][0].body('aUri', 'aRequestBody', function(err, responseBody) {
+                expect(responseBody).toEqual([200, expectedBody, jasmine.objectContaining(headers)]);
                 done();
             });
         });
@@ -227,8 +286,28 @@ describe('KnockerBuilder', function() {
 
             spyOn(knocker, '_setLastRequestBody');
             nock.keyedInterceptors['PUT ' + url][0].body('aUri', 'aRequestBody', function(err, responseBody) {
-                expect(responseBody).toEqual(expectedBody);
+                expect(responseBody).toEqual([200, expectedBody, undefined]);
                 expect(knocker._setLastRequestBody).toHaveBeenCalledWith('aRequestBody');
+                done();
+            });
+        });
+
+        it('should create a knocker for put requests with headers', function(done) {
+            var nock,
+                knocker,
+                expectedBody = { ok: true },
+                headers = { foo: 'bar' };
+
+            knocker = knockerBuilder
+                .put(url)
+                .reply(200, expectedBody, headers)
+                .build();
+
+            nock = knocker._nock;
+
+            spyOn(knocker, '_setLastRequestBody');
+            nock.keyedInterceptors['PUT ' + url][0].body('aUri', 'aRequestBody', function(err, responseBody) {
+                expect(responseBody).toEqual([200, expectedBody, jasmine.objectContaining(headers)]);
                 done();
             });
         });

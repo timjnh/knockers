@@ -23,7 +23,7 @@ npm install --save-dev knockers
             // the interface accepts full urls.  no more parsing required
             .get('http://somefunwebsite/with/a/path/and?a=query')
             // where appropriate, interfaces match nock's
-            .reply(200, { stuff: 'and things' })
+            .reply(200, { stuff: 'and things' }, { 'aHeader': 'forTheResponse' })
             .build();
 
         doSomethingToKickOffAnHttpRequest();
@@ -43,7 +43,7 @@ GET requests are very simple
 
     knockers()
         .get('http://somefunwebsite/with/a/path/and?a=query')
-        .reply(200, { stuff: 'and things' })
+        .reply(200, { stuff: 'and things' }, { 'anOptional': 'hashOfHeaders' })
         .build();
 
 # POST requests
@@ -52,7 +52,7 @@ POST requests are pretty much the same
 
     var knocker = knockers()
         .post('http://somefunwebsite/with/a/path')
-        .reply(200, { ok: true })
+        .reply(200, { ok: true }, <optional headers>)
         .build();
 
 Bodies are inserted into the request object for validation in the expectation portion of your test
@@ -65,7 +65,17 @@ DELETE requests are pretty close as well
 
     knockers()
         .delete('http://somefunwebsite/with/a/path')
+        .reply(200, { stuff: 'and things' }, <optional headers>)
+        .build();
+
+# Persisting requests
+
+Persisting requests will cause the same response to get returned for multiple calls to the same URL
+
+    knockers()
+        .get('http://somefunwebsite/with/a/path/and?a=query')
         .reply(200, { stuff: 'and things' })
+        .persist()
         .build();
 
 # Cleanup

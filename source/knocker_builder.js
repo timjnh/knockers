@@ -37,8 +37,8 @@ module.exports = (function() {
         return this;
     };
 
-    KnockerBuilder.prototype.reply = function reply(code, body) {
-        this._reply = { code: code, body: body };
+    KnockerBuilder.prototype.reply = function reply(code, body, headers) {
+        this._reply = { code: code, body: body, headers: headers };
         return this;
     };
 
@@ -82,13 +82,13 @@ module.exports = (function() {
         if(this._reply.error) {
             myNock = myNock.replyWithError(this._reply.error);
         } else {
-            myNock = myNock.reply(this._reply.code, function (uri, requestBody, cb) {
+            myNock = myNock.reply(function (uri, requestBody, cb) {
                 // this is kind of icky but i can't see any other way to get to the body
                 // of the request that nock received.  the reply callback is currently
                 // executed after the request even is emitted.  as long as that remains
                 // true, this should be ok
                 knocker._setLastRequestBody(requestBody);
-                cb(null, _this._reply.body);
+                cb(null, [_this._reply.code, _this._reply.body, _this._reply.headers]);
             });
         }
 
@@ -114,13 +114,13 @@ module.exports = (function() {
         if(this._reply.error) {
             myNock = myNock.replyWithError(this._reply.error);
         } else {
-            myNock = myNock.reply(this._reply.code, function (uri, requestBody, cb) {
+            myNock = myNock.reply(function (uri, requestBody, cb) {
                 // this is kind of icky but i can't see any other way to get to the body
                 // of the request that nock received.  the reply callback is currently
                 // executed after the request even is emitted.  as long as that remains
                 // true, this should be ok
                 knocker._setLastRequestBody(requestBody);
-                cb(null, _this._reply.body);
+                cb(null, [_this._reply.code, _this._reply.body, _this._reply.headers]);
             });
         }
 
@@ -143,7 +143,7 @@ module.exports = (function() {
         if(this._reply.error) {
             myNock = myNock.replyWithError(this._reply.error);
         } else {
-            myNock = myNock.reply(this._reply.code, this._reply.body);
+            myNock = myNock.reply(this._reply.code, this._reply.body, this._reply.headers);
         }
 
         return Knocker.build(myNock);
@@ -166,9 +166,9 @@ module.exports = (function() {
         if(this._reply.error) {
             myNock = myNock.replyWithError(this._reply.error);
         } else {
-            myNock = myNock.reply(this._reply.code, function (uri, requestBody, cb) {
+            myNock = myNock.reply(function (uri, requestBody, cb) {
                 knocker._setLastRequestBody(requestBody);
-                cb(null, _this._reply.body);
+                cb(null, [_this._reply.code, _this._reply.body, _this._reply.headers]);
             });
         }
 

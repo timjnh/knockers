@@ -30,6 +30,27 @@ describe('knockers', function() {
                 })
                 .done(done);
         });
+
+        it('should respond with headers', function(done) {
+            var knocker,
+                requestPromise,
+                url = 'http://www.google.com/a/path/and?a=query',
+                expectedResponse = { ok: true },
+                headers = { foo: 'bar' };
+
+            knocker = knockers()
+                .get(url)
+                .reply(200, expectedResponse, headers)
+                .build();
+
+            requestPromise = rest.get(url);
+
+            q.spread([knocker.received(), requestPromise],
+                function (request, response) {
+                    expect(response.response.headers).toEqual(jasmine.objectContaining(headers));
+                })
+                .done(done);
+        });
     });
 
     describe('delete', function () {
@@ -52,6 +73,27 @@ describe('knockers', function() {
                     expect(knocker.requests[0]).toBe(request);
 
                     expect(response.data).toEqual(expectedResponse);
+                })
+                .done(done);
+        });
+
+        it('should respond with headers', function(done) {
+            var knocker,
+                requestPromise,
+                url = 'http://www.google.com/a/path/',
+                expectedResponse = { ok: true },
+                headers = { foo: 'bar' };
+
+            knocker = knockers()
+                .delete(url)
+                .reply(200, expectedResponse, headers)
+                .build();
+
+            requestPromise = rest.del(url);
+
+            q.spread([knocker.received(), requestPromise],
+                function (request, response) {
+                    expect(response.response.headers).toEqual(jasmine.objectContaining(headers));
                 })
                 .done(done);
         });
@@ -117,6 +159,26 @@ describe('knockers', function() {
         });
     });
 
+    it('should respond with headers', function(done) {
+        var knocker,
+            requestPromise,
+            url = 'http://www.google.com/a/path/and',
+            headers = { foo: 'bar' };
+
+        knocker = knockers()
+            .post(url)
+            .reply(200, { goat: 'cheese' }, headers)
+            .build();
+
+        requestPromise = rest.postJson(url, { 'silly': 'fish' });
+
+        q.spread([knocker.received(), requestPromise],
+            function (request, response) {
+                expect(response.response.headers).toEqual(jasmine.objectContaining(headers));
+            })
+            .done(done);
+    });
+
     describe('put', function() {
         it('should intercept and log requests', function(done) {
             var knocker,
@@ -139,6 +201,26 @@ describe('knockers', function() {
                     expect(knocker.requests[0].body).toEqual(expectedRequestBody);
 
                     expect(response.data).toEqual(expectedResponse);
+                })
+                .done(done);
+        });
+
+        it('should respond with headers', function(done) {
+            var knocker,
+                requestPromise,
+                url = 'http://www.google.com/a/path/and',
+                headers = { foo: 'bar' };
+
+            knocker = knockers()
+                .put(url)
+                .reply(200, { silly: 'fish' }, headers)
+                .build();
+
+            requestPromise = rest.putJson(url, { goat: 'cheese' });
+
+            q.spread([knocker.received(), requestPromise],
+                function (request, response) {
+                    expect(response.response.headers).toEqual(jasmine.objectContaining(headers));
                 })
                 .done(done);
         });
