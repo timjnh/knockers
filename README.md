@@ -84,12 +84,6 @@ Persisting requests will cause the same response to get returned for multiple ca
         knockers.cleanAll();
     })
 
-# Misc
-
-<img src="https://github.com/timjnh/knockers/blob/master/knockers.png" />
-
-Yes they will npmjs.org... Yes they will.
-
 # License
 
 MIT
