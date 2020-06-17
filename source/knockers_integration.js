@@ -225,4 +225,51 @@ describe('knockers', function() {
                 .done(done);
         });
     });
+
+    describe('patch', function() {
+        it('should intercept and log requests', function(done) {
+            var knocker,
+                requestPromise,
+                url = 'http://www.google.com/a/path/and',
+                expectedRequestBody = { hi: 'there!' },
+                expectedResponse = { ok: true};
+
+            knocker = knockers()
+                .patch(url)
+                .reply(200, expectedResponse)
+                .build();
+
+            requestPromise = rest.patch(url, { headers: { 'Content-type': 'application/json' }, data: JSON.stringify(expectedRequestBody) });
+
+            q.spread([knocker.received(), requestPromise],
+                function (request, response) {
+                    expect(knocker.requests.length).toEqual(1);
+                    expect(knocker.requests[0]).toBe(request);
+                    expect(knocker.requests[0].body).toEqual(expectedRequestBody);
+
+                    expect(response.data).toEqual(expectedResponse);
+                })
+                .done(done);
+        });
+
+        it('should respond with headers', function(done) {
+            var knocker,
+                requestPromise,
+                url = 'http://www.google.com/a/path/and',
+                headers = { foo: 'bar' };
+
+            knocker = knockers()
+                .patch(url)
+                .reply(200, { silly: 'fish' }, headers)
+                .build();
+
+            requestPromise = rest.patch(url, { headers: { 'Content-type': 'application/json' }, data: JSON.stringify({ goat: 'cheese' }) });
+
+            q.spread([knocker.received(), requestPromise],
+                function (request, response) {
+                    expect(response.response.headers).toEqual(jasmine.objectContaining(headers));
+                })
+                .done(done);
+        });
+    });
 });

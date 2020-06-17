@@ -30,6 +30,15 @@ describe('KnockerBuilder', function() {
         });
     });
 
+    describe('patch method', function () {
+        it('should set the method and url', function () {
+            var url = 'http://www.google.com';
+            expect(knockerBuilder.patch(url)).toBe(knockerBuilder);
+            expect(knockerBuilder._method).toEqual('PATCH');
+            expect(knockerBuilder._url).toEqual(url);
+        });
+    });
+
     describe('reply method', function () {
         it('should set the reply object', function () {
             var expectedResponse = {ok: true};
@@ -308,6 +317,32 @@ describe('KnockerBuilder', function() {
             spyOn(knocker, '_setLastRequestBody');
             nock.keyedInterceptors['PUT ' + url][0].body('aUri', 'aRequestBody', function(err, responseBody) {
                 expect(responseBody).toEqual([200, expectedBody, jasmine.objectContaining(headers)]);
+                done();
+            });
+        });
+
+        it('should create a knocker for patch requests', function(done) {
+            var nock,
+                knocker,
+                expectedBody = { ok: true };
+
+            knocker = knockerBuilder
+                .patch(url)
+                .reply(200, expectedBody)
+                .build();
+
+            expect(Knocker.build).toHaveBeenCalled();
+
+            nock = knocker._nock;
+            expect(nock).not.toBeUndefined();
+
+            expect(nock.keyedInterceptors['PATCH ' + url]).toBeDefined();
+            expect(nock.keyedInterceptors['PATCH ' + url][0].statusCode).toEqual(200);
+
+            spyOn(knocker, '_setLastRequestBody');
+            nock.keyedInterceptors['PATCH ' + url][0].body('aUri', 'aRequestBody', function(err, responseBody) {
+                expect(responseBody).toEqual([200, expectedBody, undefined]);
+                expect(knocker._setLastRequestBody).toHaveBeenCalledWith('aRequestBody');
                 done();
             });
         });

@@ -26,6 +26,12 @@ module.exports = (function() {
         return this;
     };
 
+    KnockerBuilder.prototype.patch = function put(url) {
+        this._method = 'PATCH';
+        this._url = url;
+        return this;
+    };
+
     KnockerBuilder.prototype.delete = function _delete(url) {
         this._method = 'DELETE';
         this._url = url;
@@ -54,8 +60,8 @@ module.exports = (function() {
         assert(this._method, 'method is required');
         if(this._method == 'POST') {
             return buildPostKnocker.bind(this)();
-        } else if(this._method == 'PUT') {
-            return buildPutKnocker.bind(this)();
+        } else if(this._method == 'PUT' || this._method == 'PATCH') {
+            return buildPutOrPatchKnocker.bind(this)();
         } else if(this._method == 'GET') {
             return buildGetKnocker.bind(this)();
         } else if(this._method == 'DELETE') {
@@ -97,7 +103,7 @@ module.exports = (function() {
         return knocker;
     }
 
-    function buildPutKnocker() {
+    function buildPutOrPatchKnocker() {
         var myNock,
             _this = this,
             parsedUrl = url.parse(this._url),
@@ -108,8 +114,13 @@ module.exports = (function() {
             myNock = myNock.persist(this._persist);
         }
 
-        myNock = myNock.filteringRequestBody(function(body) { return '*'; })
-            .put(parsedUrl.path, '*');
+        myNock = myNock.filteringRequestBody(function(body) { return '*'; });
+
+        if(this._method == 'PUT') {
+            myNock = myNock.put(parsedUrl.path, '*');
+        } else {
+            myNock = myNock.patch(parsedUrl.path, '*');
+        }
 
         if(this._reply.error) {
             myNock = myNock.replyWithError(this._reply.error);
