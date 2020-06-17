@@ -1,6 +1,6 @@
 {
   "name": "knockers",
-  "version": "0.0.0-semantically-released",
+  "version": "0.0.0-semantically-released", 
   "description": "Slightly friendlier interface for nock",
   "main": "index.js",
   "scripts": {
