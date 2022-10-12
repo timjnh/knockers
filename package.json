@@ -29,7 +29,7 @@
     "husky": "1.2.0",
     "istanbul": "0.4.5",
     "jasmine": "2.99.0",
-    "jasmine-reporters": "2.3.2",
+    "jasmine-reporters": "2.5.0",
     "nodemon": "1.18.7",
     "restling": "0.9.1",
     "semantic-release": "4.3.5",
